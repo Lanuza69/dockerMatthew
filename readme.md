@@ -201,7 +201,8 @@ puntos de final principales:
 
 
 
-```md
+
+
 ###  Tabla de Puertos
 
 | Servicio     | Puerto Interno | Puerto Externo | Descripción |
@@ -218,6 +219,7 @@ puntos de final principales:
    1. primero tendras que configurar las variables del entorno
       (copia el archivo .env.example y crea el .env con tus propias credenciales)
    2. ejecuta con el docker abierto docker compose up --build
-   3. Acceder a la aplicación desde los puertos asignados front(http://localhost:8080) back (http://localhost:4000/tasks)
+   3. Acceder a la aplicación desde los puertos asignados
+      front (http://localhost:8080) back (http://localhost:4000/tasks)
 
 
