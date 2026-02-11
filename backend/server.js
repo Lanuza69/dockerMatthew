@@ -20,20 +20,31 @@ const pool = new Pool({
 
 // Inicializar la base de datos
 async function initDatabase() {
-  try {
-    await pool.query(`
-      CREATE TABLE IF NOT EXISTS tasks (
-        id SERIAL PRIMARY KEY,
-        title VARCHAR(255) NOT NULL,
-        completed BOOLEAN DEFAULT FALSE,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      )
-    `);
-    console.log('✅ Base de datos inicializada correctamente');
-  } catch (err) {
-    console.error('❌ Error al inicializar la base de datos:', err);
+  let connected = false;
+
+  while (!connected) {
+    try {
+      await pool.query('SELECT 1');
+      connected = true;
+      console.log('✅ Conectado a PostgreSQL');
+
+      await pool.query(`
+        CREATE TABLE IF NOT EXISTS tasks (
+          id SERIAL PRIMARY KEY,
+          title VARCHAR(255) NOT NULL,
+          completed BOOLEAN DEFAULT FALSE,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+      `);
+
+      console.log('📦 Tabla tasks lista');
+    } catch (err) {
+      console.log('⏳ Esperando a PostgreSQL...');
+      await new Promise(res => setTimeout(res, 3000));
+    }
   }
 }
+
 
 initDatabase();
 
