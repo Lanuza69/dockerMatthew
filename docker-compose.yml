@@ -1,0 +1,39 @@
+services:
+  database:
+    image: postgres:15
+    container_name: postgres-db
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - examen-network
+
+  backend:
+    build: ./backend
+    container_name: examen-backend
+    restart: always
+    env_file:
+      - .env
+    depends_on:
+      - database
+    ports:
+      - "${PORT}:4000"
+    networks:
+      - examen-network
+
+  frontend:
+    image: nginx:alpine
+    container_name: examen-frontend
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+    ports:
+      - "8080:80"
+
+volumes:
+  postgres-data:
+
+networks:
+  examen-network:
+    driver: bridge
